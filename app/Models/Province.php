@@ -12,4 +12,11 @@ class Province extends Model
 
     protected $table = 'provinces';
     protected $guarded = [];
+
+    public function city() {
+        return $this->hasMany(City::class);
+    }
+    public function user() {
+        return $this->belongsTo(City::class);
+    }
 }

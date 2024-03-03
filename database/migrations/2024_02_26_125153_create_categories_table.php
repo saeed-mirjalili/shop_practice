@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedInteger('parent_id')->default(0);
+            $table->unsignedInteger('brand_id')->default(0);
             $table->string('name');
             $table->text('description')->nullable();
             $table->softDeletes();

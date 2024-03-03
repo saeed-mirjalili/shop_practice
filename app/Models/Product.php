@@ -12,4 +12,16 @@ class Product extends Model
 
     protected $table = 'products';
     protected $guarded = [];
+
+    public function category() {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function productImage() {
+        return $this->hasMany(ProductImage::class);
+    }
+
+    public function orderItem() {
+        return $this->hasMany(OrderItem::class);
+    }
 }

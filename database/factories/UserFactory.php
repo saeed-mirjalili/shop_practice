@@ -5,6 +5,8 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Models\Province;
+use App\Models\City;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -29,6 +31,10 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'address' => fake()->paragraph(rand(1,2)),
+            'cellphone' => fake()->phoneNumber(),
+            'province_id' => Province::factory()->create()->id,
+            'city_id' => City::factory()->create()->id,
         ];
     }
 
