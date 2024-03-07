@@ -7,6 +7,7 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class orderController extends Controller
 {
@@ -36,5 +37,27 @@ class orderController extends Controller
             'token' => $token,
             'request_form' => $request->request_form
         ]);
+    }
+    public static function update($token, $transId) {
+        DB::beginTransaction();
+        $transaction = Transaction::where('token' , $token)->firstOrFail();
+        $transaction->update([
+            'status' => 1,
+            'trans_id' => $transId
+        ]);
+
+        $order = Order::findOrFail($transaction->order_id);
+        $order->update([
+            'status' => 1,
+            'payment_status' => 1
+        ]);
+
+        foreach(OrderItem::where('order_id', $order->id)->get() as $item){
+            $product = Product::find($item->product_id);
+            $product->update([
+                'quantity' => ($product->quantity - $item->quantity)
+            ]);
+        }
+        DB::commit();
     }
 }

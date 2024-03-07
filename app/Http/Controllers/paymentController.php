@@ -63,16 +63,17 @@ class paymentController extends mainController
         $api = env('YOUR_API_KEY');
         $token = $request->token;
         $result = json_decode($this->verifyRequest($api,$token));
-        return response()->json($result);
+        // return response()->json($result);
         if(isset($result->status)){
             if($result->status == 1){
-                echo "<h1>تراکنش با موفقیت انجام شد</h1>";
+                orderController::update($token, $result->transId);
+                return $this->Response('success', 'تراکنش با موفقیت انجام شد', null, 200);
             } else {
-                echo "<h1>تراکنش با خطا مواجه شد</h1>";
+                return $this->Response('Erroe', 'تراکنش با خطا مواجه شد', null, 422);
             }
         } else {
             if($_GET['status'] == 0){
-                echo "<h1>تراکنش با خطا مواجه شد</h1>";
+                return $this->Response('Erroe', 'تراکنش با خطا مواجه شد', null, 422);
             }
         }
     }
